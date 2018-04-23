@@ -1,0 +1,43 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+gazelle(
+    name = "gazelle",
+    # you project name here!
+    prefix = "github.com/brendanjryan/groupcache-bazel",
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "byteview.go",
+        "groupcache.go",
+        "http.go",
+        "peers.go",
+        "sinks.go",
+    ],
+    importpath = "github.com/brendanjryan/groupcache-bazel",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//consistenthash:go_default_library",
+        "//groupcachepb:go_default_library",
+        "//lru:go_default_library",
+        "//singleflight:go_default_library",
+        "@com_github_golang_protobuf//proto:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "byteview_test.go",
+        "groupcache_test.go",
+        "http_test.go",
+    ],
+    embed = [":go_default_library"],
+    deps = [
+        "//groupcachepb:go_default_library",
+        "//testpb:go_default_library",
+        "@com_github_golang_protobuf//proto:go_default_library",
+    ],
+)

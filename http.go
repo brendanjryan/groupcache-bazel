@@ -24,9 +24,8 @@ import (
 	"net/url"
 	"strings"
 	"sync"
-
-	"github.com/golang/groupcache/consistenthash"
-	pb "github.com/golang/groupcache/groupcachepb"
+	"github.com/brendanjryan/groupcache-bazel/consistenthash"
+	pb "github.com/brendanjryan/groupcache-bazel/groupcachepb"
 	"github.com/golang/protobuf/proto"
 )
 

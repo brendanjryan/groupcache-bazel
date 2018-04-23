@@ -1,4 +1,8 @@
-# groupcache
+# groupcache-bazel
+
+A fork of the [groupcache](github.com/golang/groupcache) project built with [Bazel.](https://bazel.build/)
+
+----
 
 ## Summary
 

@@ -1,0 +1,40 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_binary")
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push", "container_image")
+
+go_image(
+    name = "groupcache_image_base",
+    embed = [":go_default_library"],
+)
+
+# wrapper image used to expose ports to the underlying go_image
+container_image(
+    name = "groupcache_image",
+    base = ":groupcache_image_base",
+    ports = ["8080"],
+)
+
+container_push(
+    name = "push",
+    format = "Docker",
+    image = ":groupcache_image",
+    registry = "index.docker.io",
+    repository = "brendanjryan/groupcache-bazel",
+    tag = "master",  # don't do this on production image :)
+)
+
+go_binary(
+    name = "groupcache",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/brendanjryan/groupcache-bazel/example",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:go_default_library",
+    ],
+)
